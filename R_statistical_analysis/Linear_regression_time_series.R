@@ -1,3 +1,6 @@
+# Calling the package required for to run the function
+library("car")
+library("lmtest")
 
 # Loading sldutah data set into environment
 load("sldutah.RData")
@@ -46,9 +49,6 @@ plot(modreg_cd,
      main="Cook's distance of observations")
 
 # lets check all of these outliers in a single plot
-# Calling the package required for to run the function
-library("car")
-
 modreg_outl <- influencePlot(modreg, 
                              main="Outlier detection plot")
 
@@ -59,8 +59,6 @@ modreg$model[row.names(modreg_outl), ]
 data2 <- data[!(row.names(data) %in% row.names(modreg_outl)),]
 
 modreg2 <- update(modreg, data = data2); summary(modreg2); summary(modreg)
-
-
 
 # scatterplot of residuals against observations for the new updated regression model
 
@@ -90,15 +88,11 @@ cor(modreg2$model[2:ncol(modreg$model)])
 # variance inflation factor
 vif(modreg2)
 
-# calling library for Breech-Pagan test
-library("lmtest")
-
 # bptest
 bptest(modreg2)
 
 # Kolmogorov-Smirnov tests
 ks.test(scale(modreg2$residuals, center=T, scale=T), "pnorm")
-
 
 # there seems to be some NA in data as well as some zero value somewhere 
 # due to which the log transformation is not working
@@ -136,7 +130,6 @@ temp$Month <- factor(temp$Month, labels=c("Jan", "Feb", "Mar", "Apr",
 temp$Weekday <- strftime(temp$Date, format="%a")
 temp$Weekday <- factor(temp$Weekday, levels=c("Sun", "Mon", "Tue", 
                                               "Wed", "Thu", "Fri", "Sat"))
-
 
 # Making a new permanent data set
 Atr <- temp[,c("Date", "Total", "Year", "Month", "Weekday")]
