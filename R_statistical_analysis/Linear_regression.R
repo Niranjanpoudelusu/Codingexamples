@@ -1,10 +1,9 @@
 
-#Niranjan Poudel(Niranjan111@hotmail.com)
+# Niranjan Poudel(Niranjan111@hotmail.com)
 
 
 # Loading data into the environment 
 load("sldutah.RData")
-
 
 # Extracting only the required variables into a new data set
 data <- sldutah[,c(56,78,88,100,101)]
@@ -17,8 +16,6 @@ data$D1B <- cut(data$D1B,
 # Running the linear regression model
 regmod <- lm(D5ar ~ D1B + D2A_EPHHM + 
                D3amm + D4d, data = data); summary(regmod)
-
-# Assignment part 2 ###
 
 # Loading the required data sets into the environment 
 load("Downloads/atr0620.Rdata")
@@ -34,7 +31,7 @@ str(loganweath)
 temp <- aggregate(Count ~ Date, data = atr0620 ,FUN = sum, na.rm=T)
 names(temp) <- c("Date", "Total")
 
-###Now lets add other variables also in this new data set
+# Now lets add other variables also in this new data set
 
 temp$Year <- as.integer(strftime(temp$Date, format="%Y"))
 temp$Month <- as.integer(strftime(temp$Date, format="%m"))
@@ -46,18 +43,18 @@ temp$Weekday <- strftime(temp$Date, format="%a")
 temp$Weekday <- factor(temp$Weekday, levels=c("Sun", "Mon", "Tue", 
                                               "Wed", "Thu", "Fri", "Sat"))
 
-###Making a new permanent data set
+# Making a new permanent data set
 Atr <- temp[,c("Date", "Total", "Year", "Month", "Weekday")]
 rm(temp)
 
-###Now lets merge this data with the dataframe of weather
+# Now lets merge this data with the dataframe of weather
 mergedata <- merge(Atr, loganweath,by.x= "Date",
                    by.y = "DATE", all.x = T )
 
-## Creating a time series of total count variable
+# Creating a time series of total count variable
 mts <- ts(mergedata$Total,frequency = 7)
 
-###Plotting the time series
+# Plotting the time series
 par(mar=c(10,10,10,6)+0.3)
 par(cex.axis = 0.7, cex.lab=1)
 plot(mts, ylim=c(3000, 16000),las=1, xlab = "Week",
@@ -66,17 +63,17 @@ plot(mts, ylim=c(3000, 16000),las=1, xlab = "Week",
 title(ylab = "Daily Count",line = 4.5)
 
 
-##Decomposing my time series models
+# Decomposing my time series models
 mts_decom <- stl(mts, s.window = "periodic")
 plot(mts_decom, main = " Decomposition of time series of daily motor counts")
 
-###estimating the time series regression model 
+# estimating the time series regression model 
 ts_reg <- lm(Total ~ Weekday + Month + TMIN + TMAX, data= mergedata)
 summary(ts_reg)
 
 par(mar=c(5,4,4,2))
 
-###plotting the total count with respect to minimum and meximum temperature.
+# plotting the total count with respect to minimum and meximum temperature.
 plot(mergedata$Total,mergedata$TMIN)
 plot(mergedata$Total, mergedata$TMAX)
 
