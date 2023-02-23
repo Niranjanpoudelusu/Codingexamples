@@ -1,6 +1,5 @@
 
 #Niranjan Poudel(Niranjan111@hotmail.com)
-#Lab 4
 
 
 # Loading data into the environment 
