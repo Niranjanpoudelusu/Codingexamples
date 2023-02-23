@@ -1,5 +1,9 @@
 # loading the required packages
 library(RSQLite)
+library(XML)
+library(xml2)
+library(anytime)
+library(ggplot2)
 
 # Defining the database driver
 driver <- dbDriver("SQLite")
@@ -95,12 +99,6 @@ dbDisconnect(parlcon)
 
 
 # XML example
-# Loading the required packages
-library(XML)
-library(xml2)
-library(anytime)
-library(ggplot2)
-
 
 list.files("XML") %>%
   paste0("XML/", .) %>%
